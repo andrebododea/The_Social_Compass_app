@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:id="@+id/content_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.s1350924.es_assignment_1.CameraActivity"
+    tools:showIn="@layout/activity_cam">
+
+    <TextView
+        android:id="@+id/intro"
+        android:layout_width = "match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:textSize="20dp"
+        android:text="This feature allows you to take a photo and tag it with your current GPS location and compass direction!"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        />
+
+    <TextView
+        android:id="@+id/step1"
+        android:layout_width ="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:layout_below="@+id/compass"
+        android:textSize="20dp"
+        android:text="1) Point your phone in the direction of the photo you want to take."
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        />
+
+    <TextView
+        android:id="@+id/step2"
+        android:layout_width = "match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:textSize="20dp"
+        android:text="2) Click the button to record the direction and bring up the camera app"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        />
+
+    <TextView
+        android:id="@+id/step3"
+        android:layout_width = "match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:textSize="20dp"
+        android:text="3) Capture your photo and share with friends!"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+
+        />
+
+
+</LinearLayout>

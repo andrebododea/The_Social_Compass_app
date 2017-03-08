@@ -13,48 +13,16 @@
     tools:context="com.example.s1350924.es_assignment_1.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <Button android:id="@+id/compass"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="107dp"
-        android:id="@+id/Xaxis"
-        android:textSize="30sp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="X"
-        android:textAlignment="center" />
+        android:layout_centerVertical="true"
+        android:text="Click for compass" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <Button android:id="@+id/camera"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/Yaxis"
-        android:textSize="30sp"
-        android:text="Y"
-        android:layout_below="@+id/Xaxis"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="26dp"
-        android:textAlignment="center" />
+        android:layout_below="@+id/compass"
+        android:text="Click for camera" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:id="@+id/Zaxis"
-        android:textSize="30sp"
-        android:text="Z"
-        android:layout_below="@+id/Yaxis"
-        android:layout_alignLeft="@+id/Yaxis"
-        android:layout_alignStart="@+id/Yaxis"
-        android:textAlignment="center" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/magnetic_field"
-        android:textSize="30sp"
-        android:text="Brap"
-        android:layout_marginTop="56dp"
-        android:layout_below="@+id/Zaxis"
-        android:layout_centerHorizontal="true"
-        android:textAlignment="center" />
 </RelativeLayout>
