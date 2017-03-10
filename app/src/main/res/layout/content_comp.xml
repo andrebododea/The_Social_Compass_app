@@ -16,7 +16,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="107dp"
+        android:layout_marginTop="40dp"
         android:id="@+id/Xaxis"
         android:textSize="30sp"
         android:layout_alignParentTop="true"
@@ -30,7 +30,7 @@
         android:id="@+id/imageViewCompass"
         android:layout_below="@+id/Xaxis"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="50dp"
         android:src="@drawable/compass_image" />
 
 </RelativeLayout>

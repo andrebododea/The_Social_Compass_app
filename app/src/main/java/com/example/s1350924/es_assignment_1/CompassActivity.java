@@ -1,18 +1,27 @@
 package com.example.s1350924.es_assignment_1;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.hardware.GeomagneticField;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class CompassActivity extends Activity implements SensorEventListener {
+
+    private Location currentLocation;
+    private GeomagneticField geomagneticField;
 
     private SensorManager mSensorManager;
     //get access to sensor
@@ -47,7 +56,7 @@ public class CompassActivity extends Activity implements SensorEventListener {
         // h = Math.sqrt(event.values[0]*event.values[0]+event.values[1]*
         // event.values[1]+event.values[2]*event.values[2]);
 
-        final float alpha = 0;//0.97f;
+        final float alpha = 0.9f;
 
         if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             // read sensor called from SensorEvent and save them to accelerometer values
@@ -63,6 +72,7 @@ public class CompassActivity extends Activity implements SensorEventListener {
             magneticFieldValues[1] = alpha * magneticFieldValues[1] + (1 - alpha) * event.values[1];
             magneticFieldValues[2] = alpha * magneticFieldValues[2] + (1 - alpha) * event.values[2];
         }
+
         calculateOrientation();
 
     }
@@ -91,6 +101,36 @@ public class CompassActivity extends Activity implements SensorEventListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comp);
+
+        LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+        // Check if have the necessary permissions (Fine location for GPS)
+        if (ContextCompat.checkSelfPermission(CompassActivity.this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            // Instantiate a CurrentLocationListener
+            CurrentLocationListener locationListener = new CurrentLocationListener();
+
+            // Passes the current location to the CurrentLocationListener function
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+            double mLat = locationListener.getCurrentLatitude();
+            double mLong = locationListener.getCurrentLatitude();
+
+            // try with network provider
+            Location networkLocation = locationManager
+                    .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+            if (networkLocation != null) {
+                currentLocation = networkLocation;
+            }
+
+            geomagneticField = new GeomagneticField(
+                    (float) currentLocation.getLatitude(),
+                    (float) currentLocation.getLongitude(),
+                    (float) currentLocation.getAltitude(),
+                    System.currentTimeMillis());
+        }
 
         initialisation();
         calculateOrientation();
@@ -137,8 +177,14 @@ public class CompassActivity extends Activity implements SensorEventListener {
             // values[0] holds azimuth, rotation about the z-axis.
             float degree = (float) (Math.toDegrees(values[0]));
 
-            //Convert from -180 to +180 degrees into 0 to 360 degrees
-            degree = Math.round(degree + 360)%360;
+            // fix difference between true North and magnetical North
+            if (geomagneticField != null) {
+                degree += geomagneticField.getDeclination();
+            }
+
+            if (degree < 0) {
+                degree += 360;
+            }
 
             // create a rotation animation (reverse turn degree degrees)
             RotateAnimation ra = new RotateAnimation(
@@ -154,7 +200,7 @@ public class CompassActivity extends Activity implements SensorEventListener {
             float distance_in_degrees = Math.round(Math.abs(Math.abs(currentDegree) - Math.abs(degree)));
             int timeOfAnimation = (int)(distance_in_degrees*.3);
 
-            ra.setDuration(500);   // how long the animation will take place
+            ra.setDuration(30);   // how long the animation will take place
 
             ra.setRepeatCount(0);
 
@@ -166,9 +212,10 @@ public class CompassActivity extends Activity implements SensorEventListener {
             currentDegree = -degree;
 
 
-            double ddm = 22.5 / 2;
             mag_x.setText("At " + Math.round(degree) + " degrees.");
             /*
+            double ddm = 22.5 / 2;
+
             if(degree > -1*ddm && degree <= 1*ddm){
                 mag_x.setText("At " + (int)degree + " degrees (North).");
             }else if(degree > 1*ddm && degree <= 3*ddm){
